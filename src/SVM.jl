@@ -1,9 +1,9 @@
 # encoding = utf-8
 # Author: Liu Jing
-# Date: 2019-01-22
+# Date: 2019-01-21
 # Email: zhulincaowu@gmail.com
 # Last modified by: Liu Jing
-# Last modified time: 2019-01-24
+# Last modified time: 2019-01-23
 
 # Julia Version 1.0.2
 
@@ -168,7 +168,7 @@ function var_select(svm::SVM)
 
     E = [E_cal(svm, i) for i in satisfy_ind]
     # 内层循环，在外层循环已经找到第1个变量α₁后，寻找使得α₂尽量大变化的第二个变量
-    @simd for i in satisfy_ind
+    for i in satisfy_ind
         if kkt_condition(svm, i)
             continue
         end
@@ -181,10 +181,10 @@ function var_select(svm::SVM)
     end
 end
 
-E = zeros(svm.m)
+E = zeros(length(train_labels))
 
 function fit(svm::SVM)
-    @simd for t in 1:svm.max_iter
+    for t in 1:svm.max_iter
         # train
         i1, i2 = var_select(svm)
 
@@ -227,7 +227,7 @@ function fit(svm::SVM)
 
         # P130 b_new更新方法
         if 0 < α1_new < svm.C && 0 < α2_new < svm.C
-            b_new = b1_new
+            b_new = b2_new
         elseif  α1_new == 0 || α1_new == svm.C || α2_new == 0 || α2_new == svm.C
         # b1_new和b2_new以及它们之间数符合KKT条件的阀值，这时选择它们的中点来更新
             b_new = (b1_new + b2_new) / 2
@@ -252,21 +252,20 @@ function predict(svm::SVM, data)
 end
 
 function _precision(svm, test_features, test_labels)
-    right_count = 0
+    count = 0
     for i in 1:size(test_features,1)
         result =  predict(svm, test_features[i, :])
         if result == test_labels[i]
-            right_count += 1
+            count += 1
         end
     end
-    return right_count / size(test_features, 1)
+    return count / size(test_features, 1)
 end
-
-
 
 
 linear_svm = SVM(features = train_features, labels = train_labels, kernel_name = "linear")
 gaussian_svm = SVM(features = train_features, labels = train_labels, kernel_name = "gaussian")
 polynomial_svm = SVM(features = train_features, labels = train_labels, kernel_name = "polynomial")
 
+svm = [linear_svm, gaussian_svm, polynomial_svm]
 [println("the $name kernel precision is: $ans") for (name, ans) in zip(["linear", "gaussian", "polynomial"],[(fit(s); _precision(s, test_features, test_labels)) for s in svm])]

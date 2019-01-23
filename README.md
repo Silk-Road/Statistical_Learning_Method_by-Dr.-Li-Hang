@@ -10,8 +10,12 @@
 
 另外，Julia语言是目前接触的科学计算语言里最喜欢的，优点太多了，首先写出来的代码看起来就舒服，嗯，代码颜值高，学过Matlab、R和Python的同学如果学Julia的话会看到很多相似的地方，另外就是快！去年底，Julia自12年开始开发经过6年发展终于出了1.0版，所以自己打算用Julia简单写李航博士书里的算法，除一些很基础的包外，尽量不调用第三方包写核心算法，水平有限，能写几个写几个。
 
-特别是在“爱可可-爱生活”微博上看到博主发的“WenDesi”用Python 2写的《统计学习方法》，深受鼓舞，从“WenDesi”的Python代码里也受益良多，一并感谢！
+特别是在“爱可可-爱生活”微博上看到两篇博文，分别是“WenDesi”和“fengdu78"用Python 2和Python 3写的《统计学习方法》，深受鼓舞，从两位作者的Python代码中也受益良多，一并感谢！
 
 ## WenDesi的代码链接
 
 https://github.com/WenDesi/lihang_book_algorithm
+
+## fengdu78的代码链接
+
+https://github.com/fengdu78/lihang-code
